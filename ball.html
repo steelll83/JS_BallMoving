@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Ball</title>
+  <style>
+
+    #ball {
+      position: absolute;
+      left: 0;
+      top: 0;
+      -webkit-transition: all 1s ease-out;
+      -moz-transition: all 1s ease-out;
+      -o-transition: all 1s ease-out;
+      -ms-transition: all 1s ease-out;
+      transition: all 1s ease-out;
+    }
+
+    #field {
+      width: 300px;
+      height: 300px;
+      border: 10px inset black;
+      cursor: crosshair;
+      background-color: #00FF00;
+      position: relative;   /*all objects in this field will be relative of this field*/
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="field">
+    <img src="ball.png" id="ball">
+  </div>
+
+  <script>
+    var field = document.getElementById('field');
+    var ball = document.getElementById('ball');
+
+    field.onclick = function(event) {
+      ball.src = 'ballan.gif';
+
+      var fieldLeft = field.getBoundingClientRect().top + field.clientTop;  // begin of coordinates
+      var fieldTop = field.getBoundingClientRect().left + field.clientLeft; //
+
+      var ballTop = event.clientY - fieldTop - ball.clientHeight / 2;  // point of click in the middle of image
+      var ballLeft = event.clientX - fieldLeft - ball.clientWidth / 2;
+
+      // check image for don't overlay border of field
+      if (ballTop < 0) { //сверху
+        ballTop = 0;
+      }
+      if (ballLeft < 0) {  //слева
+        ballLeft = 0;
+      }
+      if (ballTop + ball.clientHeight > field.clientHeight) { //низ
+        ballTop = field.clientHeight - ball.clientHeight;
+      }
+      if (ballLeft + ball.clientWidth > field.clientWidth) { //право
+        ballLeft = field.clientWidth - ball.clientWidth;
+      }
+
+      ball.style.left = ballLeft + 'px';
+      ball.style.top = ballTop + 'px';
+    }
+
+    // when transition end, get static image
+    ball.ontransitionend =  function(event) {
+      ball.src = 'ball.png';
+    }
+
+  </script>
+
+</body>
+
+</html>
